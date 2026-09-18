@@ -1,0 +1,4 @@
+const API='http://127.0.0.1:5000/api';
+async function loadProducts(){const q=document.getElementById('search')?.value||'';const r=await fetch(API+'/products?q='+encodeURIComponent(q));const data=await r.json();document.getElementById('products').innerHTML=data.map(p=>`<article class="card"><img src="${p.image_url}"><h2>${p.name}</h2><small>${p.brand} · ${p.category}</small><h3>₹${Number(p.price).toLocaleString('en-IN')}</h3><p>${p.description||''}</p><button onclick="add(${p.id})">Add to cart</button></article>`).join('')}
+function add(id){let cart=JSON.parse(localStorage.cart||'[]');let x=cart.find(i=>i.product_id===id);if(x)x.quantity++;else cart.push({product_id:id,quantity:1});localStorage.cart=JSON.stringify(cart);alert('Added to cart')}
+loadProducts();
